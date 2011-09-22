@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   has_many :questions
   has_many :answers
   
+  has_many :star_questions
+  has_many :follow_questions
+  
   protected
     def create_login
       if self.username.empty?

@@ -36,6 +36,8 @@ class QuestionsController < ApplicationController
   
   # PUT /questions/:id/star
   def star
+    puts "===="
+    puts current_user.id
     current_user.star_questions.create(:question_id => params[:id])
     respond_to do |format|
       format.json { head :ok }
@@ -55,9 +57,9 @@ class QuestionsController < ApplicationController
   def is_star
     respond_to do |format|
       if current_user.star_questions.exists?(:question_id => params[:id])
-        format.json { :status => :no_content }
+        format.json { head :no_content }
       else
-        format.json { :status => :not_found }
+        format.json { head :not_found }
       end
     end
   end
@@ -83,9 +85,9 @@ class QuestionsController < ApplicationController
   def is_follow
     respond_to do |format|
       if current_user.follow_questions.exists?(:question_id => params[:id])
-        format.json { :status => :no_content }
+        format.json { head :no_content }
       else
-        format.json { :status => :not_found }
+        format.json { head :not_found }
       end
     end
   end
