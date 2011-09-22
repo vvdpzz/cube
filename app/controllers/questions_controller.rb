@@ -26,7 +26,17 @@ class QuestionsController < ApplicationController
   
   # POST /questions
   def create
-    
+    uuid, user_id, title, content, credit, money = UUIDList.pop, current_user_id, params[:title], params[:content], params[:credit].to_i, params[:money].to_i
+    question = Question.new :id => uuid, :user_id => user_id, :title => title, :content => content, :credit => credit, :money => money
+    respond_to do |format|
+      if question.valid?
+        #Question.strong_insert user_id, title, content, credit, money
+        Question.strong_insert(uuid, user_id, title, content, credit, money)
+        format.json { render :json => question, :status => :created, :location => question }
+      else
+        format.json { render :json => question.errors, :status => :unprocessable_entity }
+      end
+    end
   end
   
   # PUT /questions/:id

@@ -25,7 +25,7 @@ class Question < ActiveRecord::Base
   
   # Call MySQL Stored Procedure
   def self.strong_insert(uuid, user_id, title, content, credit, money)
-    
+    ActiveRecord::Base.connection.execute("call sp_deduct_credit_and_money(#{uuid},'#{title}','#{content}',#{user_id},#{credit},#{money})")
   end
   
 end
