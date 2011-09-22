@@ -3,19 +3,12 @@ source 'http://rubygems.org'
 gem 'rails', '3.1.0'
 gem 'uuidtools'
 gem 'mysql2'
-
 gem 'json'
-
 gem 'devise'
-
 gem 'redis'
-
 gem 'resque'
-
 gem 'enumerate_it'
-
 gem 'settingslogic'
-
 gem 'kaminari'
 
 # Gems used only for assets and not required

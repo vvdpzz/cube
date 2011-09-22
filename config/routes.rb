@@ -26,5 +26,7 @@ Cube::Application.routes.draw do
   
   resources :answers, :only => [:create]
   
+  root :to => 'questions#paid'
+  
   devise_for :users
 end
