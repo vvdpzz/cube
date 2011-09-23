@@ -36,6 +36,11 @@ class Question < ActiveRecord::Base
     sql.commit_db_transaction
   end
   
+  def self.redis_question_show(id)
+    question = Question.select('').where(:user_id => id)
+    $redis.hset(h_q_show,"q#{id}","")
+  end
+  
   def self.question_show_redis
     
   end
