@@ -1,7 +1,7 @@
 class CreateAnswers < ActiveRecord::Migration
   def change
     create_table :answers, :id => false do |t|
-      t.integer :id, :limit => 20, :null => false
+      t.integer :id, :limit => 8, :null => false
       t.references :user, :null => false
       t.references :question, :null => false
       t.text :content, :null => false
