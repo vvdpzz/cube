@@ -40,7 +40,15 @@ class QuestionsController < ApplicationController
   
   # PUT /questions/:id
   def update
-    
+    id, title, content, credit, money = params[:id], params[:title], params[:content], params[:credit].to_i, params[:money].to_i
+    respond_to do |format|
+      if question.valid?
+        Question.strong_update id title content credit money
+        format.json { render :json => question, :status => :created, :location => question }
+      else
+        format.json { render :json => question.errors, :status => :unprocessable_entity }
+      end
+    end
   end
   
   # PUT /questions/:id/star

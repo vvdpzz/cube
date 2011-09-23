@@ -28,4 +28,15 @@ class Question < ActiveRecord::Base
     ActiveRecord::Base.connection.execute("call sp_deduct_credit_and_money(#{id},#{user_id},'#{title}','#{content}',#{credit},#{money})")
   end
   
+  def self.strong_update(id, title, content, credit, money)
+    sql = ActiveRecord::Base.connection()
+    sql.execute "SET autocommit=0"
+    sql.begin_db_transaction
+    sql.update "update questions set title = #{title}, content = #{content}, credit = #{credit}, money = #{money} where id = #{id}";
+    sql.commit_db_transaction
+  end
+  
+  def self.question_show_redis
+    
+  end
 end
