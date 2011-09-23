@@ -26,11 +26,11 @@ class QuestionsController < ApplicationController
   
   # POST /questions
   def create
-    uuid, user_id, title, content, credit, money = UUIDList.pop, current_user_id, params[:title], params[:content], params[:credit].to_i, params[:money].to_i
+    id, user_id, title, content, credit, money = UUIDList.pop, current_user_id, params[:title], params[:content], params[:credit].to_i, params[:money].to_i
     question = Question.new :id => uuid, :user_id => user_id, :title => title, :content => content, :credit => credit, :money => money
     respond_to do |format|
       if question.valid?
-        Question.strong_insert(uuid, user_id, title, content, credit, money)
+        Question.strong_insert(id, user_id, title, content, credit, money)
         format.json { render :json => question, :status => :created, :location => question }
       else
         format.json { render :json => question.errors, :status => :unprocessable_entity }
@@ -45,9 +45,9 @@ class QuestionsController < ApplicationController
   
   # PUT /questions/:id/star
   def star
-    puts "===="
-    puts current_user.id
-    current_user.star_questions.create(:question_id => params[:id])
+    if not current_user.star_questions.exists?(:question_id => params[:id])
+      current_user.star_questions.create(:question_id => params[:id])
+    end
     respond_to do |format|
       format.json { head :ok }
     end
@@ -75,7 +75,9 @@ class QuestionsController < ApplicationController
   
   # PUT /questions/:id/follow
   def follow
-    current_user.follow_questions.create(:question_id => params[:id])
+    if not current_user.follow_questions.exists?(:question_id => params[:id])
+      current_user.follow_questions.create(:question_id => params[:id])
+    end
     respond_to do |format|
       format.json { head :ok }
     end

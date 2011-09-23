@@ -1,14 +1,16 @@
 class User < ActiveRecord::Base
-  devise :database_authenticatable, :registerable,
+  devise :token_authenticatable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :remember_me
   attr_accessible :login, :realname, :username, :credit, :money, :about_me
+  attr_accessible :authentication_token
   attr_accessor :login
   
   # Callbacks
   before_create :create_login
+  before_create :ensure_authentication_token
   
   # Associations
   has_many :questions
