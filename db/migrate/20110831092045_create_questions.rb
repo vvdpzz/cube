@@ -1,7 +1,8 @@
 class CreateQuestions < ActiveRecord::Migration
   def change
     create_table :questions, :id => false do |t|
-      t.integer :id, :limit => 20, :null => false
+      #t.integer :id, :limit => 20, :null => false
+      t.bigint :id
       t.references :user, :null => false
       t.string :title, :null => false
       t.text :content
