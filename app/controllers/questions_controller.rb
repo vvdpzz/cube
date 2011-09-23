@@ -1,12 +1,16 @@
 class QuestionsController < ApplicationController
   # GET /questions/paid
   def paid
-    
+    Question.paid.select("id, title, credit, money, answers_count, votes_count, created_at")
   end
   
   # GET /questions/free
   def free
-    
+    questions = Question.free.select("id, title, credit, money, answers_count, votes_count, created_at")
+    data = questions.collect{ |question| question.serializable_hash }
+    respond_to do |format|
+      format.json { render :json => data, :status => :ok }
+    end
   end
   
   # GET /questions/nearby
@@ -26,12 +30,15 @@ class QuestionsController < ApplicationController
   
   # POST /questions
   def create
-    id, user_id, title, content, credit, money = UUIDList.pop, current_user_id, params[:title], params[:content], params[:credit].to_i, params[:money].to_i
-    question = Question.new :id => uuid, :user_id => user_id, :title => title, :content => content, :credit => credit, :money => money
+    id, user_id, title, content, credit, money = UUIDList.pop, current_user.id, params[:title], params[:content], params[:credit].to_i, params[:money].to_i
+    question = Question.new :id => id, :user_id => user_id, :title => title, :content => content, :credit => credit, :money => money
     respond_to do |format|
       if question.valid?
         Question.strong_insert(id, user_id, title, content, credit, money)
-        format.json { render :json => question, :status => :created, :location => question }
+        question = Question.find_by_id id
+        data = question.serializable_hash
+        data.merge! User.basic_hash current_user.id
+        format.json { render :json => data, :status => :created, :location => question }
       else
         format.json { render :json => question.errors, :status => :unprocessable_entity }
       end

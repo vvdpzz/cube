@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :remember_me
+  attr_accessible :id, :email, :password, :remember_me
   attr_accessible :login, :realname, :username, :credit, :money, :about_me
   attr_accessible :authentication_token
   attr_accessor :login
@@ -18,6 +18,10 @@ class User < ActiveRecord::Base
   
   has_many :star_questions
   has_many :follow_questions
+  
+  def self.basic_hash(user_id)
+    {:user => User.select("id, username, realname").find_by_id(user_id).serializable_hash}
+  end
   
   protected
     def create_login
