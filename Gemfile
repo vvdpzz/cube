@@ -1,13 +1,15 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.0'
-gem 'uuidtools'
 gem 'mysql2'
-gem 'json'
 gem 'devise'
-gem 'redis'
+
+gem 'hiredis'
+gem 'redis', :require => ["redis/connection/hiredis", "redis"]
+
 gem 'resque'
-gem 'enumerate_it'
+
+gem 'uuidtools'
 gem 'settingslogic'
 gem 'kaminari'
 
