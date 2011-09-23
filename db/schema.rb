@@ -14,12 +14,12 @@
 ActiveRecord::Schema.define(:version => 20110909081450) do
 
   create_table "answers", :id => false, :force => true do |t|
-    t.integer  "id",                             :null => false
-    t.integer  "user_id",                        :null => false
-    t.integer  "question_id",                    :null => false
-    t.text     "content",                        :null => false
-    t.boolean  "is_correct",  :default => false
-    t.integer  "votes_count", :default => 0
+    t.integer  "id",          :limit => 8,                    :null => false
+    t.integer  "user_id",                                     :null => false
+    t.integer  "question_id",                                 :null => false
+    t.text     "content",                                     :null => false
+    t.boolean  "is_correct",               :default => false
+    t.integer  "votes_count",              :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,15 +74,15 @@ ActiveRecord::Schema.define(:version => 20110909081450) do
   add_index "money_transactions", ["winner_id"], :name => "index_money_transactions_on_winner_id"
 
   create_table "questions", :id => false, :force => true do |t|
-    t.integer  "id",                                                               :null => false
-    t.integer  "user_id",                                                          :null => false
-    t.string   "title",                                                            :null => false
+    t.integer  "id",                :limit => 8,                                                :null => false
+    t.integer  "user_id",                                                                       :null => false
+    t.string   "title",                                                                         :null => false
     t.text     "content"
-    t.integer  "credit",                                          :default => 0
-    t.decimal  "money",             :precision => 8, :scale => 2, :default => 0.0
-    t.integer  "answers_count",                                   :default => 0
-    t.integer  "votes_count",                                     :default => 0
-    t.integer  "correct_answer_id",                               :default => 0
+    t.integer  "credit",                                                       :default => 0
+    t.decimal  "money",                          :precision => 8, :scale => 2, :default => 0.0
+    t.integer  "answers_count",                                                :default => 0
+    t.integer  "votes_count",                                                  :default => 0
+    t.integer  "correct_answer_id",                                            :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
