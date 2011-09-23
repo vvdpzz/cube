@@ -9,7 +9,7 @@ DROP PROCEDURE IF EXISTS sjobs_development.sp_deduct_credit_and_money
 /* Crete Stored Procedure*/
 DELIMITER //
 CREATE PROCEDURE sp_deduct_credit_and_money (
-	in uuid int,
+	in uuid bigint,
 	in user_id int,
 	in title varchar(100),
 	in content text,
