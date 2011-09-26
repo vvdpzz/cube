@@ -10,6 +10,7 @@ gem 'redis', :require => ["redis/connection/hiredis", "redis"]
 gem 'resque'
 
 gem 'uuidtools'
+gem 'enumerate_it'
 gem 'settingslogic'
 gem 'kaminari'
 
