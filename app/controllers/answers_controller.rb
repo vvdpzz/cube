@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
   # POST /answers
   def create
     if question.was_not_answered_by? current_user.id
-      id, user_id, question_id, content = UUIDList.pop, current_user.id, params[:question_id], params[:answer]
+      id, user_id, question_id, content = UUIDList.pop, current_user.id, params[:question_id], params[:content]
       answer = Answer.new :id => id, :user_id => user_id, :question_id => question_id, :content => content
       answer_price = Settings.answer_price
     
