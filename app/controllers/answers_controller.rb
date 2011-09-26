@@ -3,7 +3,8 @@ class AnswersController < ApplicationController
   def create
     id, user_id, question_id, content, is_correct, vote_count = UUIDList.pop, current_user.id, params[:question_id], params[:answer]
     answer = Answer.new :id => id, :user_id => user_id, :question_id => question_id, :content => content
-
+    description = APP_CONFIG["notice_comment_#{@instance_type}"]
+    
     respond_to do |format|
       if answer.save
         question = Question.find_by_id id

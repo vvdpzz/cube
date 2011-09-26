@@ -23,7 +23,7 @@ class Answer < ActiveRecord::Base
     sql.execute "SET autocommit=0"
     sql.begin_db_transaction
     sql.update "update questions set title = #{title}, content = #{content}, credit = #{credit}, money = #{money} where id = #{id}";
-    sql.update "update questions set title = #{title}, content = #{content}, credit = #{credit}, money = #{money} where id = #{id}";
+    sql.update "insert into ";
     sql.commit_db_transaction
   end
   
