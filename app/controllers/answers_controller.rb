@@ -26,6 +26,11 @@ class AnswersController < ApplicationController
     # 2 CreditTransaction and/or MoneyTransaction
     # 3 Question: mark correct answer
     # 4 Answer: mark is correct answer
+    
+    #:payment => false,
+    #:trade_type => TradeType::ACCEPT,
+    #:trade_status => TradeStatus::SUCCESS
+
     question_id,answer_id,user_id = params[:question_id], params[:id], current_user.id
     question_info = Question.select('user_id,credit,money,correct_answer_id').where(:id => question_id)
     credit,money = question_info.credit,question_info.money
