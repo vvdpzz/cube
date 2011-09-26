@@ -1,7 +1,11 @@
 class QuestionsController < ApplicationController
   # GET /questions/paid
   def paid
-    Question.paid.select("id, title, credit, money, answers_count, votes_count, created_at")
+    questions = Question.paid.select("id, title, credit, money, answers_count, votes_count, created_at")
+    data = questions.collect{ |question| question.serializable_hash }
+    respond_to do |format|
+      format.json { render :json => data, :status => :ok }
+    end
   end
   
   # GET /questions/free
@@ -13,9 +17,10 @@ class QuestionsController < ApplicationController
     end
   end
   
-  # GET /questions/nearby
+  # GET /questions/nearby?lat=&lnt=
   def nearby
-    
+    lat = params[:lat]
+    lnt = params[:lnt]
   end
   
   # GET /questions/watching
