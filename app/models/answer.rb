@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Answer < ActiveRecord::Base
   # Associations
   belongs_to :user, :counter_cache => true
@@ -18,13 +19,33 @@ class Answer < ActiveRecord::Base
     end
   end
   
-  def self.strong_insert(id, title, content, credit, money)
+  def self.strong_insert(id, user_id, question_id, content, answer_price)
     sql = ActiveRecord::Base.connection()
     sql.execute "SET autocommit=0"
     sql.begin_db_transaction
-    sql.update "update questions set title = #{title}, content = #{content}, credit = #{credit}, money = #{money} where id = #{id}";
-    sql.update "insert into ";
+    sql.update "INSERT INTO answer (id, user_id, question_id, content) VALUES (#{id},#{user_id},#{question_id},#{content})";
+    sql.update "UPDATE users SET updated_at = NOW(), credit = credit - #{answer_price} WHERE users.id = #{user_id}"
     sql.commit_db_transaction
+  end  
+
+  def enough_credit_to_pay
+    if self.question.not_free? and self.question.correct_answer_id == 0 and self.user.credit < Settings.answer_price
+      errors.add(:credit, "you do not have enough credit to pay.")
+    end
   end
   
+  def deduct_credit
+    self.user.update_attribute(:credit, self.user.credit - Settings.answer_price)
+  end
+  
+  def order_credit
+    CreditTransaction.create(
+      :user_id => self.user.id,
+      :question_id => self.question.id,
+      :answer_id => self.id,
+      :value => Settings.answer_price,
+      :trade_type => TradeType::ANSWER,
+      :trade_status => TradeStatus::NORMAL
+    )
+  end
 end
