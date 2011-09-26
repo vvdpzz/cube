@@ -122,4 +122,9 @@ class QuestionsController < ApplicationController
       end
     end
   end
+  
+  # PUT /questions/:id/vote_up
+  def vote_up
+    
+  end
 end
