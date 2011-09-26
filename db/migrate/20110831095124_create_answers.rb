@@ -7,7 +7,7 @@ class CreateAnswers < ActiveRecord::Migration
       t.text :content, :null => false
       t.boolean :is_correct, :default => false
       t.integer :votes_count, :default => 0
-
+      t.binary :comments, :limit => 10.megabyte
       t.timestamps
     end
     add_index :answers, :user_id
