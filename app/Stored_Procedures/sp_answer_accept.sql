@@ -11,11 +11,7 @@ DROP PROCEDURE IF EXISTS sp_answer_accept
 # 2 CreditTransaction and/or MoneyTransaction
 # 3 Question: mark correct answer
 # 4 Answer: mark is correct answer
-# FIXME change credit_transactions and money_transactions table answer_id column type
-#:payment => false,
-#:trade_type => TradeType::ACCEPT,
-#:trade_status => TradeStatus::SUCCESS
-# FIXME change questions table correct_answer_id column type
+
 DELIMITER //
 CREATE PROCEDURE sp_answer_accept (
 	in question_id bigint,

@@ -9,7 +9,7 @@ class CreateQuestions < ActiveRecord::Migration
       t.decimal :money, :precision => 8, :scale => 2, :default => 0
       t.integer :answers_count, :default => 0
       t.integer :votes_count, :default => 0
-      t.integer :correct_answer_id, :default => 0
+      t.integer :correct_answer_id, :limit => 8, :default => 0
       t.binary :comments, :limit => 10.megabyte
       t.timestamps
     end
