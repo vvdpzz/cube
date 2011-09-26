@@ -4,7 +4,7 @@
 3 Usage in Rails: ActiveRecord::Base.connection.execute("call sp_deduct_credit_and_money('#{title}','#{content}',#{id},#{credit},#{money})") @question_controller.rb
 */
 /* Drop if Exists */
-DROP PROCEDURE IF EXISTS sjobs_development.sp_deduct_credit_and_money
+DROP PROCEDURE IF EXISTS sp_deduct_credit_and_money
 
 /* Crete Stored Procedure*/
 DELIMITER //
