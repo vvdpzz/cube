@@ -1,15 +1,16 @@
 class CommentsController < ApplicationController
-  before_filter :who_called_comment
+  # before_filter :who_called_comment
   
   def new
   end
   
+  # POST /questions/:id/comments
   def create
+    @instance = Question.find_by_id params[:id]
     old_comments = @instance.comments
     
     hash = {}
-    hash[:user_id] = current_user.id
-    hash[:realname] = current_user.realname
+    hash.merge! User.basic_hash current_user.id
     hash[:content] = params[:content]
     hash[:created_at] = Time.now
     
@@ -20,12 +21,10 @@ class CommentsController < ApplicationController
       new_comments = old_comments + ',' + MultiJson.encode(hash)
     end
     
-    comment = hash[:content]
-    
-    description = APP_CONFIG["notice_comment_#{@instance_type}"]
-
-    if @instance.update_attribute(:comments, new_comments)
-      Resque.enqueue(NewCommentQueue, current_user.id, current_user.realname, description, @instance, comment)
+    respond_to do |format|
+      if @instance.update_attribute(:comments, new_comments)
+        format.json { render :json => hash }
+      end
     end
   end
   

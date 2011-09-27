@@ -30,6 +30,19 @@ class QuestionsController < ApplicationController
   
   # GET /questions/:id
   def show
+    question = Question.find_by_id params[:id]
+    q_hash = question.serializable_hash
+    q_data = q_hash.merge! User.basic_hash question.user_id
+
+    comment = Comment.where(:question_id => params[:id])
+    
+    answers = Answer.where(:question_id => params[:id])
+    answers.each do |answers|
+      comment = Comment.where(:question_id => answer.question_id)  
+    end
+    
+    a_data = answers.collect{ |answer| answer.serializable_hash.merge!(User.basic_hash answer.user_id)}
+    a_data = q_hash.merge! User.basic_hash question.user_id
     
   end
   
@@ -39,7 +52,7 @@ class QuestionsController < ApplicationController
     question = Question.new :id => id, :user_id => user_id, :title => title, :content => content, :credit => credit, :money => money
     respond_to do |format|
       if question.valid?
-        Question.strong_insert(id, user_id, title, content, credit, money)
+        Question.strong_create_question(id, user_id, title, content, credit, money)
         question = Question.find_by_id id
         data = question.serializable_hash
         data.merge! User.basic_hash current_user.id

@@ -21,16 +21,18 @@ class Answer < ActiveRecord::Base
     end
   end
   
-  def self.strong_insert(id, user_id, question_id, content, answer_price)
+  def self.strong_create_free_answer(id, user_id, question_id, content )
     sql = ActiveRecord::Base.connection()
     sql.execute "SET autocommit=0"
     sql.begin_db_transaction
-    sql.update "INSERT INTO answer (id, user_id, question_id, content) VALUES (#{id},#{user_id},#{question_id},#{content})";
-    sql.update "UPDATE users SET updated_at = NOW(), credit = credit - #{answer_price} WHERE users.id = #{user_id}"
+    sql.update "INSERT INTO answers (id, user_id, question_id, content) VALUES (#{id},#{user_id},#{question_id},'#{content}')";
     sql.commit_db_transaction
   end  
-  
-  # Call MySQL Stored Procedure
+
+  def self.strong_create_pay_answer(id, user_id, question_id, content, answer_price)
+    ActiveRecord::Base.connection.execute("call sp_strong_create_pay_answer( #{id},#{user_id},#{question_id},'#{content}',#{answer_price})")
+  end    
+
   def self.strong_accept_answer(question_id, answer_id, user_id, credit, money)
     ActiveRecord::Base.connection.execute("call sp_answer_accept(#{question_id}, #{answer_id}, #{user_id}, #{credit}, #{money})")
   end
