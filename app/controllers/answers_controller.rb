@@ -42,9 +42,8 @@ class AnswersController < ApplicationController
     end
     
     respond_to do |format|
-      if Answer.strong_update_comment(instance.id,new_comments)
-        format.json { render :json => hash }
-      end
+      Answer.strong_update_comment(instance.id,new_comments)
+      format.json { render :json => hash }
     end
   end
   
