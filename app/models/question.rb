@@ -31,7 +31,7 @@ class Question < ActiveRecord::Base
   end
   
   # Call MySQL Stored Procedure
-  def self.strong_insert(id, user_id, title, content, credit, money)
+  def self.strong_create_question(id, user_id, title, content, credit, money)
     ActiveRecord::Base.connection.execute("call sp_deduct_credit_and_money(#{id},#{user_id},'#{title}','#{content}',#{credit},#{money})")
   end
   
@@ -43,13 +43,10 @@ class Question < ActiveRecord::Base
     sql.commit_db_transaction
   end
   
-  def self.redis_question_show(id)
+  def self.question_show_redis(id)
+    # TODO: To store json in Redis
     question = Question.select('').where(:user_id => id)
     $redis.hset(h_q_show,"q#{id}","")
-  end
-  
-  def self.question_show_redis
-    
   end
    
   ["credit", "money"].each do |name|

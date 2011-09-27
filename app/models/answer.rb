@@ -25,7 +25,8 @@ class Answer < ActiveRecord::Base
     sql = ActiveRecord::Base.connection()
     sql.execute "SET autocommit=0"
     sql.begin_db_transaction
-    sql.update "INSERT INTO answer (id, user_id, question_id, content) VALUES (#{id},#{user_id},#{question_id},#{content})";
+    sql.update "INSERT INTO answers (id, user_id, question_id, content) VALUES (#{id},#{user_id},#{question_id},'#{content}')";
+    # TODO: Tuning, if it's free question, don't need to update user table
     sql.update "UPDATE users SET updated_at = NOW(), credit = credit - #{answer_price} WHERE users.id = #{user_id}"
     sql.commit_db_transaction
   end  

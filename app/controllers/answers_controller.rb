@@ -8,7 +8,7 @@ class AnswersController < ApplicationController
     
       respond_to do |format|
         if answer.valid?
-          strong_insert(id, user_id, question_id, content, answer_price)
+          Answer.strong_insert(id, user_id, question_id, content, answer_price)
           answer = Answer.find_by_id id
           data = answer.serializable_hash
           data.merge! User.basic_hash current_user.id
@@ -37,8 +37,9 @@ class AnswersController < ApplicationController
     if question_info.user_id <> current_user.id and question_info.correct_answer_id == 0
       Question.strong_accept_answer(question_id, answer_id, user_id, credit, money)
       question.async_accept_answer(answer.id)
-      redirect_to question
-    # TODO zhengyu, do we need to return a json here?
+      respond_to do |format|
+        format.json { head :ok }
+      end
     end
   end
     
