@@ -64,10 +64,10 @@ class Question < ActiveRecord::Base
     define_method "order_#{name}" do
       if self.send(name) > 0
         "#{name}_transaction".classify.constantize.create(
-          :user_id => self.user.id,
-          :question_id => self.id,
-          :value => self.send(name),
-          :trade_type => TradeType::ASK,
+          :user_id      => self.user.id,
+          :question_id  => self.id,
+          :value        => self.send(name),
+          :trade_type   => TradeType::ASK,
           :trade_status => TradeStatus::NORMAL
         )
       end

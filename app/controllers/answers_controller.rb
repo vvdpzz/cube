@@ -4,11 +4,10 @@ class AnswersController < ApplicationController
     if question.was_not_answered_by? current_user.id
       id, user_id, question_id, content = UUIDList.pop, current_user.id, params[:question_id], params[:content]
       answer = Answer.new :id => id, :user_id => user_id, :question_id => question_id, :content => content
-      answer_price = Settings.answer_price
-    
       respond_to do |format|
         if answer.valid?
-          strong_insert(id, user_id, question_id, content, answer_price)
+          Answer.strong_insert id, user_id, question_id, content
+          if question.not_free? and question.correct_answer_id == 0 and answer.deduct_credit and answer.order_credit
           answer = Answer.find_by_id id
           data = answer.serializable_hash
           data.merge! User.basic_hash current_user.id

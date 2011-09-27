@@ -47,12 +47,13 @@ class Answer < ActiveRecord::Base
   
   def order_credit
     CreditTransaction.create(
-      :user_id => self.user.id,
-      :question_id => self.question.id,
-      :answer_id => self.id,
-      :value => Settings.answer_price,
-      :trade_type => TradeType::ANSWER,
+      :user_id      => self.user.id,
+      :question_id  => self.question.id,
+      :answer_id    => self.id,
+      :value        => Settings.answer_price,
+      :trade_type   => TradeType::ANSWER,
       :trade_status => TradeStatus::NORMAL
     )
   end
+
 end
