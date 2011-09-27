@@ -24,7 +24,7 @@ class AnswersController < ApplicationController
     end
   end
  
-  # POST /questions/:question_id/answer/:id/comment
+  # POST /answers/:id/comments
   def create_comment
     instance = Answer.find_by_id params[:id]
     old_comments = instance.comments
