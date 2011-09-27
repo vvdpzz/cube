@@ -82,7 +82,7 @@ ELSE IF deduct_credit > 0 AND deduct_money > 0.00 THEN
  	  WHERE users.id = user_id;
 
 	/*insert into tran*/
-	INSERT INTO credit_transactions (answer_id, created_at, payment, question_id, trade_status, trade_type, 	updated_at, user_id, value, winner_id) 
+	INSERT INTO credit_transactions (answer_id, created_at, payment, question_id, trade_status, trade_type, updated_at, user_id, value, winner_id) 
 	VALUES (NULL, NOW(), 1, uuid, 0, 0, NOW(), user_id, deduct_credit, NULL);
 	
 	INSERT INTO money_transactions (answer_id, created_at, payment, question_id, trade_status, 
