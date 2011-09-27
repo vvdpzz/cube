@@ -38,7 +38,7 @@ class Question < ActiveRecord::Base
     sql = ActiveRecord::Base.connection()
     sql.execute "SET autocommit=0"
     sql.begin_db_transaction
-    sql.update "UPDATE questions SET comment = #{new_comments} WHERE id = #{question_id}";
+    sql.update "UPDATE questions SET comment = '#{new_comments}' WHERE id = #{question_id}";
     sql.commit_db_transaction
   end    
   
@@ -46,7 +46,7 @@ class Question < ActiveRecord::Base
     sql = ActiveRecord::Base.connection()
     sql.execute "SET autocommit=0"
     sql.begin_db_transaction
-    sql.update "UPDATE questions SET title = #{title}, content = #{content}, credit = #{credit}, money = #{money} where id = #{id}";
+    sql.update "UPDATE questions SET title = '#{title}', content = '#{content}', credit = #{credit}, money = #{money} WHERE id = #{id}";
     sql.commit_db_transaction
   end
   
