@@ -12,7 +12,7 @@ class Answer < ActiveRecord::Base
 
   def self.basic_hash(answer_id)
     answers = Answer.select("id,user_id,content,is_correct,votes_count,created_at").find_by_id(answer_id)
-    data = answers.collect{ |answers| answer.serializable_hash }
+    data = answers.collect{ |answer| answer.serializable_hash }
   end
 
   def enough_credit

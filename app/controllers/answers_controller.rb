@@ -34,7 +34,7 @@ class AnswersController < ApplicationController
     question_id,answer_id,user_id = params[:question_id], params[:id], current_user.id
     question_info = Question.select('user_id,credit,money,correct_answer_id').where(:id => question_id)
     credit,money = question_info.credit,question_info.money
-    if question_info.user_id <> current_user.id and question_info.correct_answer_id == 0
+    if question_info.user_id != current_user.id and question_info.correct_answer_id == 0
       Question.strong_accept_answer(question_id, answer_id, user_id, credit, money)
       question.async_accept_answer(answer.id)
       respond_to do |format|
