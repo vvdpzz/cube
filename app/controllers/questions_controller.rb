@@ -33,16 +33,10 @@ class QuestionsController < ApplicationController
     question = Question.find_by_id params[:id]
     q_hash = question.serializable_hash
     q_data = q_hash.merge! User.basic_hash question.user_id
-
-    comment = Comment.where(:question_id => params[:id])
     
     answers = Answer.where(:question_id => params[:id])
-    answers.each do |answers|
-      comment = Comment.where(:question_id => answer.question_id)  
-    end
-    
-    a_data = answers.collect{ |answer| answer.serializable_hash.merge!(User.basic_hash answer.user_id)}
-    a_data = q_hash.merge! User.basic_hash question.user_id
+    a_hash = answers.collect{ |answer| answer.serializable_hash.merge!(User.basic_hash answer.user_id)}
+    a_data = q_data.merge! a_hash
     
   end
   
