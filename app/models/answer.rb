@@ -25,7 +25,7 @@ class Answer < ActiveRecord::Base
     sql = ActiveRecord::Base.connection()
     sql.execute "SET autocommit=0"
     sql.begin_db_transaction
-    sql.update "UPDATE answers SET comment = #{new_comments} WHERE id = #{answer_id}";
+    sql.update "UPDATE answers SET comments = #{new_comments} WHERE id = #{answer_id}";
     sql.commit_db_transaction
   end
   
