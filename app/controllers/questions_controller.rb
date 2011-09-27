@@ -57,9 +57,8 @@ class QuestionsController < ApplicationController
     end
     
     respond_to do |format|
-      if Question.strong_update_comment(instance.id,new_comments)
-        format.json { render :json => hash }
-      end
+      Question.strong_update_comment(instance.id,new_comments)
+      format.json { render :json => hash, :status => :created }
     end
   end
   
