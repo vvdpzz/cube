@@ -20,8 +20,16 @@ class Answer < ActiveRecord::Base
       errors.add :credit, "credit_not_enough_to_answer_warning"
     end
   end
+
+  def self.strong_update_comment(answer_id,new_comments)
+    sql = ActiveRecord::Base.connection()
+    sql.execute "SET autocommit=0"
+    sql.begin_db_transaction
+    sql.update "UPDATE answers SET comment = #{new_comments} WHERE id = #{answer_id}";
+    sql.commit_db_transaction
+  end
   
-  def self.strong_create_free_answer(id, user_id, question_id, content )
+  def self.strong_create_free_answer(id, user_id, question_id, content)
     sql = ActiveRecord::Base.connection()
     sql.execute "SET autocommit=0"
     sql.begin_db_transaction

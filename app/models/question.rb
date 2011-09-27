@@ -30,10 +30,17 @@ class Question < ActiveRecord::Base
     self.credit != 0 or self.money != 0
   end
   
-  # Call MySQL Stored Procedure
   def self.strong_create_question(id, user_id, title, content, credit, money)
     ActiveRecord::Base.connection.execute("call sp_deduct_credit_and_money(#{id},#{user_id},'#{title}','#{content}',#{credit},#{money})")
   end
+  
+  def self.strong_update_comment(question_id,new_comments)
+    sql = ActiveRecord::Base.connection()
+    sql.execute "SET autocommit=0"
+    sql.begin_db_transaction
+    sql.update "UPDATE questions SET comment = #{new_comments} WHERE id = #{question_id}";
+    sql.commit_db_transaction
+  end    
   
   def self.strong_update(id, title, content, credit, money)
     sql = ActiveRecord::Base.connection()

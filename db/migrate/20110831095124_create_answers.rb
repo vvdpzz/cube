@@ -3,7 +3,7 @@ class CreateAnswers < ActiveRecord::Migration
     create_table :answers, :id => false do |t|
       t.integer :id, :limit => 8, :null => false
       t.references :user, :null => false
-      t.references :question, :null => false
+      t.integer :question_id, :limit => 8, :null => false
       t.text :content, :null => false
       t.boolean :is_correct, :default => false
       t.integer :votes_count, :default => 0

@@ -6,8 +6,8 @@ class CommentsController < ApplicationController
   
   # POST /questions/:id/comments
   def create
-    @instance = Question.find_by_id params[:id]
-    old_comments = @instance.comments
+    instance = Question.find_by_id params[:id]
+    old_comments = instance.comments
     
     hash = {}
     hash.merge! User.basic_hash current_user.id
@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
     end
     
     respond_to do |format|
-      if @instance.update_attribute(:comments, new_comments)
+      if Question.strong_update_comment(@instance.id,new_comments)
         format.json { render :json => hash }
       end
     end
@@ -32,8 +32,8 @@ class CommentsController < ApplicationController
   def who_called_comment
     params.each do |name, value|
       if name =~ /(.+)_id$/
-        @instance = $1.classify.constantize.find(value)
-        @instance_type = $1
+        instance = $1.classify.constantize.find(value)
+        instance_type = $1
       end
     end
   end

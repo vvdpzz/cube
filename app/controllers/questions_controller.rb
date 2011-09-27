@@ -37,7 +37,30 @@ class QuestionsController < ApplicationController
     answers = Answer.where(:question_id => params[:id])
     a_hash = answers.collect{ |answer| answer.serializable_hash.merge!(User.basic_hash answer.user_id)}
     a_data = q_data.merge! a_hash
+  end
+  
+  # POST /questions/:id/comment
+  def create_comment
+    instance = Question.find_by_id params[:id]
+    old_comments = instance.comments
     
+    hash = {}
+    hash.merge! User.basic_hash current_user.id
+    hash[:content] = params[:content]
+    hash[:created_at] = Time.now
+    
+    if old_comments.nil? 
+      old_comments = '' 
+      new_comments = MultiJson.encode(hash)
+    else
+      new_comments = old_comments + ',' + MultiJson.encode(hash)
+    end
+    
+    respond_to do |format|
+      if Question.strong_update_comment(instance.id,new_comments)
+        format.json { render :json => hash }
+      end
+    end
   end
   
   # POST /questions
