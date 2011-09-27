@@ -39,7 +39,7 @@ class QuestionsController < ApplicationController
     a_data = q_data.merge! a_hash
   end
   
-  # POST /questions/:id/comment
+  # POST /questions/:id/comments
   def create_comment
     instance = Question.find_by_id params[:id]
     old_comments = instance.comments

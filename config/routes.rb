@@ -16,7 +16,7 @@ Cube::Application.routes.draw do
       delete "follow" => "questions#unfollow"
       get "follow" => "questions#is_follow"
       
-      post "comments" => "comments#create"
+      post "comments" => "questions#create_comment"
     end
     
     resources :answers, :only => [] do
@@ -26,7 +26,11 @@ Cube::Application.routes.draw do
     end
   end
   
-  resources :answers, :only => [:create]
+  resources :answers, :only => [:create] do
+    member do
+      post "comments" => "questions#create_comment"
+    end
+  end
   
   root :to => 'questions#paid'
   
