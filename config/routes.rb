@@ -15,6 +15,8 @@ Cube::Application.routes.draw do
       put "follow"
       delete "follow" => "questions#unfollow"
       get "follow" => "questions#is_follow"
+      
+      post "comments" => "comments#create"
     end
     
     resources :answers, :only => [] do
