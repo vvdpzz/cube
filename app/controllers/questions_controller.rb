@@ -31,12 +31,17 @@ class QuestionsController < ApplicationController
   # GET /questions/:id
   def show
     question = Question.find_by_id params[:id]
+    question.comments = "[" + question.comments + "]"
+    c_hash = MultiJson.decode question.comments
     q_hash = question.serializable_hash
+    q_hash["comments"] = c_hash
     q_data = q_hash.merge! User.basic_hash question.user_id
-    
     answers = Answer.where(:question_id => params[:id])
     a_hash = answers.collect{ |answer| answer.serializable_hash.merge!(User.basic_hash answer.user_id)}
-    a_data = q_data.merge! a_hash
+    q_data = q_data.merge!({:answers => a_hash})
+    respond_to do |format|
+      format.json { render :json => q_data }
+    end
   end
   
   # POST /questions/:id/comments
