@@ -82,28 +82,32 @@ class MailsController < ApplicationController
 
   # GET /mails/:batch_id
   def view
-    #mail = Mail.select("id,title").find_by_batch_id params[:batch_id]
+    
+    batch_id = params[:batch_id]
     mails = $redis.KEYS("l_mail:*.#{batch_id}").first
     #hash = mails.collect{|mail| $redis.ZRANGE("#{mail}",0,-1)} 
     batch = $redis.LRANGE("#{mails}",0,-1) 
     #hash = MultiJson.encode batch
+    if not batch
+      #mail = Mail.select("id,title").find_by_batch_id params[:batch_id]
+    end
     
     respond_to do |format|
-      format.json { render :json => batch, :status => :created }
+      format.json { render :json => batch }
     end
   end
   
   # GET /mails/inbox
   def inbox
-    mails = $redis.lrange("l_inbox_#{current_user.id}" 0 -1)
+    mails = $redis.LRANGE("l_inbox_#{current_user.id}",0,-1)
+    #mails = MultiJson.encode(mails)
     if not mails
       mails = MailInbox.select('redis_mail').where(:user_id => current_user.id)
-      mails = MultiJson.encode(mails)
+      #mails = MultiJson.encode(mails)
       #TODO: how to get the second part of this string "[{\"redis_mail\":\"l_mail:1.2.16\"}]" ?
     end
     respond_to do |format|
-      format.html
-      format.json {render :json => {:mails => mails}}
+      format.json { render :json => {:mails => mails } }
     end
   end  
   
