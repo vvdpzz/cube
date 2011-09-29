@@ -2,7 +2,11 @@ class CreateQuestions < ActiveRecord::Migration
   def change
     create_table :questions, :id => false do |t|
       t.integer :id, :limit => 8, :null => false
+      # user info
       t.references :user, :null => false
+      t.string :username, :null => false      
+      t.string :about_me, :default => ""
+
       t.string :title, :null => false
       t.text :content
       t.integer :credit, :default => 0

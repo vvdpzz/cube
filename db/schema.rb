@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110909081450) do
+ActiveRecord::Schema.define(:version => 20110929023445) do
 
   create_table "answers", :id => false, :force => true do |t|
     t.integer  "id",          :limit => 8,                           :null => false
@@ -55,6 +55,29 @@ ActiveRecord::Schema.define(:version => 20110909081450) do
 
   add_index "follow_questions", ["question_id"], :name => "index_follow_questions_on_question_id"
   add_index "follow_questions", ["user_id"], :name => "index_follow_questions_on_user_id"
+
+  create_table "mail_inboxes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "batch_id"
+    t.integer  "mail_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mails", :force => true do |t|
+    t.integer  "batch_id"
+    t.integer  "sender_id"
+    t.string   "sender_name"
+    t.string   "sender_image"
+    t.integer  "receiver_id"
+    t.string   "receiver_name"
+    t.string   "receiver_image"
+    t.string   "title"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "redis_mail",     :limit => 30
+  end
 
   create_table "money_transactions", :force => true do |t|
     t.integer  "user_id"
