@@ -1,7 +1,9 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.0'
+
 gem 'mysql2'
+
 gem 'devise'
 
 gem 'hiredis'
@@ -10,9 +12,10 @@ gem 'redis', :require => ["redis/connection/hiredis", "redis"]
 gem 'resque'
 
 gem 'uuidtools'
+
 gem 'enumerate_it'
+
 gem 'settingslogic'
-gem 'kaminari'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -22,10 +25,13 @@ group :assets do
   gem 'uglifier'
 end
 
+gem 'execjs'
+gem 'therubyracer'
+
 gem 'jquery-rails'
 
 # Use unicorn as the web server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'
