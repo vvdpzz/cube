@@ -4,6 +4,7 @@ class CreateMessageInboxes < ActiveRecord::Migration
       t.integer :user_id
       t.integer :batch_id
       t.integer :message_id
+      t.string :redis_mail
 
       t.timestamps
     end
