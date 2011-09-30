@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
       id, user_id, question_id, content = UUIDList.pop, current_user.id, params[:question_id], params[:content]
       answer = Answer.new :id => id, :user_id => user_id, :question_id => question_id, :content => content
       answer_price = Settings.answer_price
-      question_info = Question.select('credit,money').where(:id => params[:question_id])
+      question_info = Question.select('user_id,credit,money').where(:id => params[:question_id])
       respond_to do |format|
         if answer.valid?
           if question_info.credit > 0 or question_info.money > 0
@@ -16,7 +16,7 @@ class AnswersController < ApplicationController
           answer = Answer.find_by_id id
           data = answer.serializable_hash
           data.merge! User.basic_hash current_user.id
-          Notification.notif_new_answer (question_id,id)
+          Notification.notif_new_answer (question_info.user_id,question_id,id)
           format.json { render :json => data, :status => :created, :location => answer }
         else
           format.json { render :json => answer.errors, :status => :unprocessable_entity }
@@ -43,7 +43,7 @@ class AnswersController < ApplicationController
       new_comments = old_comments + ',' + MultiJson.encode(hash)
     end
     
-    Notification.notif_new_a_comment (answer_id)
+    Notification.notif_new_a_comment (instance.user_id,answer_id)
     respond_to do |format|
       Answer.strong_update_comment(instance.id,new_comments)
       format.json { render :json => hash }

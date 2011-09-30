@@ -43,4 +43,12 @@ Cube::Application.routes.draw do
   root :to => 'questions#paid'
   
   devise_for :users
+  
+  resources :users, :only => [:show] do
+    member do
+      get 'follow'
+      get 'asked'
+      get 'answered'
+    end
+  end
 end
