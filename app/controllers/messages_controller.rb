@@ -37,7 +37,10 @@ class MessagesController < ApplicationController
         #$redis.zadd("z_mail:between.#{current_user.id}.#{params[:receiver_id]}.#{batch_id}", batch_id, MultiJson.encode(hash))
         $redis.lpush("l_inbox_#{current_user.id}",redis_mail)
         $redis.lpush("l_inbox_#{receiver_id.id}",redis_mail)
+        Notification.notif_new_message (receiver_id, sender_id, sender_name)
       end
+      
+
     end
     respond_to do |format|
       format.json { render :json => hash, :status => :created }
@@ -47,34 +50,39 @@ class MessagesController < ApplicationController
   # POST /messagereplied
   def reply
     mail = Message.where(:id => params[:mail_id])
+    sender_id    = mail.first.receiver_id
+    sender_name  = mail.first.receiver_name
+    receiver_id  = mail.first.sender_id
     redis_mail = mail.first.redis_mail
     t = Time.now
+    
     hash = {}
-    hash = {:sender_id      => mail.first.receiver_id,
-            :sender_name    => mail.first.receiver_name,
+    hash = {:sender_id      => sender_id,
+            :sender_name    => sender_name,
             :sender_image   => mail.first.receiver_image,
-            :receiver_id    => mail.first.sender_id,
+            :receiver_id    => receiver_id,
             :receiver_name  => mail.first.sender_name,
             :receiver_image => mail.first.sender_image,
             :title          => mail.first.title,
             :content        => params[:content],
             :time           => t}
 
-    Message.create(:batch_id       => mail.first.batch_id,
-    :sender_id      => mail.first.receiver_id,
-    :sender_name    => mail.first.receiver_name,
-    :sender_image   => mail.first.receiver_image,
-    :receiver_id    => mail.first.sender_id,
-    :receiver_name  => mail.first.sender_name,
-    :receiver_image => mail.first.sender_image,
-    :title          => mail.first.title,
-    :content        => params[:content],
-    :created_at     => t,
-    :redis_mail     => mail.first.redis_mail)
+    Message.create(
+      :batch_id       => mail.first.batch_id,
+      :sender_id      => mail.first.receiver_id,
+      :sender_name    => mail.first.receiver_name,
+      :sender_image   => mail.first.receiver_image,
+      :receiver_id    => mail.first.sender_id,
+      :receiver_name  => mail.first.sender_name,
+      :receiver_image => mail.first.sender_image,
+      :title          => mail.first.title,
+      :content        => params[:content],
+      :created_at     => t,
+      :redis_mail     => mail.first.redis_mail)
     
-    #$redis.zadd("z_mail:between.#{mail.first.sender_id}.#{current_user.id}.#{mail.first.batch_id}", mail.first.batch_id, MultiJson.encode(hash))
     $redis.lpush(redis_mail, MultiJson.encode(hash))
     
+    Notification.notif_new_message (receiver_id, sender_id, sender_name)
     respond_to do |format|
       format.json { render :json => hash, :status => :created }
     end

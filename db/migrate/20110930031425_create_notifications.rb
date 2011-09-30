@@ -1,17 +1,12 @@
 class CreateNotifications < ActiveRecord::Migration
   def change
     create_table :notifications do |t|
-      t.integer :receiver_id
-      t.integer :sender_id
-      t.string :sender_name
+      t.references :user
+      t.integer :notif_type
       t.string :description
-      t.integer :subject_id
-      t.string :subject_content
-      t.integer :object_id
-      t.string :object_content
-      t.boolean :read
-
+      t.boolean :read, :default => false
       t.timestamps
     end
+    add_index :notifications, :user_id
   end
 end
