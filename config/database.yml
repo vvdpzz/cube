@@ -35,8 +35,7 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: cube_production
+  database: cube
   pool: 5
   username: root
-  password:
-  socket: /tmp/mysql.sock
+  password: $ngrserver$
