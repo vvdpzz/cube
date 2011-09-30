@@ -1,5 +1,3 @@
-# coding: UTF-8
-
 class Question < ActiveRecord::Base
   belongs_to :user, :counter_cache => true
   has_many :answers, :dependent => :destroy
@@ -8,8 +6,8 @@ class Question < ActiveRecord::Base
   validates_numericality_of :money, :message => "is not a number", :greater_than_or_equal_to => 0
   validates_numericality_of :credit, :message => "is not a number", :greater_than_or_equal_to => 0
   validates_presence_of :title, :message => "can't be blank"
-  validate :enough_credit_to_pay
-  validate :enough_money_to_pay
+  validate :enough_credit
+  validate :enough_money
   
   # scopes
   scope :free, lambda { where(["credit = 0 AND money = 0.00"]) }
