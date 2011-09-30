@@ -1,8 +1,9 @@
 class Notification < ActiveRecord::Base
 
   # 1  问 题 有 了 新 答 案
-  def self.notif_new_answer
+  def self.notif_new_answer (question_id,answer_id)
     hash = {}
+    hash[:question_id]   = question_id
     hash[:answer_id]   = answer_id
     hash[:message]     = 'You have a new answer'
     
@@ -15,7 +16,7 @@ class Notification < ActiveRecord::Base
   end
   
   # 2  问 题 有 了 新 评 论
-  def self.notif_new_a_comment
+  def self.notif_new_q_comment (answer_id)
     hash = {}
     hash[:answer_id]   = answer_id
     hash[:message]     = 'You have a new comment'
@@ -27,7 +28,7 @@ class Notification < ActiveRecord::Base
   end
   
   # 3  答 案 有 了 新 评 论
-  def self.notif_new_q_comment
+  def self.notif_new_q_comment (question_id)
     hash = {}
     hash[:question_id]   = question_id
     hash[:message]     = 'You have a new comment'
@@ -39,9 +40,10 @@ class Notification < ActiveRecord::Base
   end
   
   # 4  答 案 被 接 受
-  def self.notif_answer_accepted ()
+  def self.notif_answer_accepted (question_id, answer_id)
     hash = {}
     hash[:question_id]   = question_id
+    hash[:answer_id]   = answer_id
     hash[:message]     = 'You answer has been accepted'
     
     Notification.create(

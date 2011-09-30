@@ -48,7 +48,8 @@ class QuestionsController < ApplicationController
   
   # POST /questions/:id/comments
   def create_comment
-    instance = Question.find_by_id params[:id]
+    question_id = params[:id]
+    instance = Question.find_by_id question_id
     old_comments = instance.comments
     
     hash = {}
@@ -63,6 +64,7 @@ class QuestionsController < ApplicationController
       new_comments = old_comments + ',' + MultiJson.encode(hash)
     end
     
+    Notification.notif_new_q_comment (question_id)
     respond_to do |format|
       Question.strong_update_comment(instance.id,new_comments)
       format.json { render :json => hash, :status => :created }

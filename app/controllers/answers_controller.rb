@@ -16,6 +16,7 @@ class AnswersController < ApplicationController
           answer = Answer.find_by_id id
           data = answer.serializable_hash
           data.merge! User.basic_hash current_user.id
+          Notification.notif_new_answer (question_id,id)
           format.json { render :json => data, :status => :created, :location => answer }
         else
           format.json { render :json => answer.errors, :status => :unprocessable_entity }
@@ -26,7 +27,8 @@ class AnswersController < ApplicationController
  
   # POST /answers/:id/comments
   def create_comment
-    instance = Answer.find_by_id params[:id]
+    answer_id = params[:id]
+    instance = Answer.find_by_id answer_id
     old_comments = instance.comments
     
     hash = {}
@@ -41,6 +43,7 @@ class AnswersController < ApplicationController
       new_comments = old_comments + ',' + MultiJson.encode(hash)
     end
     
+    Notification.notif_new_a_comment (answer_id)
     respond_to do |format|
       Answer.strong_update_comment(instance.id,new_comments)
       format.json { render :json => hash }
@@ -64,6 +67,7 @@ class AnswersController < ApplicationController
     if question_info.user_id != current_user.id and question_info.correct_answer_id == 0
       Question.strong_accept_answer(question_id, answer_id, user_id, credit, money)
       question.async_accept_answer(answer.id)
+      Notification.notif_answer_accepted (question_id, answer_id)
       respond_to do |format|
         format.json { head :ok }
       end
