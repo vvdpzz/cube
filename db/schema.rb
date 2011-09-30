@@ -11,11 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110929023445) do
+ActiveRecord::Schema.define(:version => 20110930034444) do
 
   create_table "answers", :id => false, :force => true do |t|
     t.integer  "id",          :limit => 8,                           :null => false
     t.integer  "user_id",                                            :null => false
+    t.string   "username",                                           :null => false
+    t.string   "about_me",                        :default => ""
     t.integer  "question_id", :limit => 8,                           :null => false
     t.text     "content",                                            :null => false
     t.boolean  "is_correct",                      :default => false
@@ -56,15 +58,15 @@ ActiveRecord::Schema.define(:version => 20110929023445) do
   add_index "follow_questions", ["question_id"], :name => "index_follow_questions_on_question_id"
   add_index "follow_questions", ["user_id"], :name => "index_follow_questions_on_user_id"
 
-  create_table "mail_inboxes", :force => true do |t|
+  create_table "message_inboxes", :force => true do |t|
     t.integer  "user_id"
     t.integer  "batch_id"
-    t.integer  "mail_id"
+    t.integer  "message_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "mails", :force => true do |t|
+  create_table "messages", :force => true do |t|
     t.integer  "batch_id"
     t.integer  "sender_id"
     t.string   "sender_name"
@@ -74,9 +76,9 @@ ActiveRecord::Schema.define(:version => 20110929023445) do
     t.string   "receiver_image"
     t.string   "title"
     t.text     "content"
+    t.string   "redis_mail"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "redis_mail",     :limit => 30
   end
 
   create_table "money_transactions", :force => true do |t|
@@ -97,9 +99,25 @@ ActiveRecord::Schema.define(:version => 20110929023445) do
   add_index "money_transactions", ["user_id"], :name => "index_money_transactions_on_user_id"
   add_index "money_transactions", ["winner_id"], :name => "index_money_transactions_on_winner_id"
 
+  create_table "notifications", :force => true do |t|
+    t.integer  "receiver_id"
+    t.integer  "sender_id"
+    t.string   "sender_name"
+    t.string   "description"
+    t.integer  "subject_id"
+    t.string   "subject_content"
+    t.integer  "object_id"
+    t.string   "object_content"
+    t.boolean  "read"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "questions", :id => false, :force => true do |t|
     t.integer  "id",                :limit => 8,                                                       :null => false
     t.integer  "user_id",                                                                              :null => false
+    t.string   "username",                                                                             :null => false
+    t.string   "about_me",                                                            :default => ""
     t.string   "title",                                                                                :null => false
     t.text     "content"
     t.integer  "credit",                                                              :default => 0

@@ -1,10 +1,10 @@
 Cube::Application.routes.draw do
  
-   match '/mails/inbox' => 'mails#inbox', :via => 'get' #inbox
-   match '/mails/reply/to/:id' => 'mails#renew', :via => 'get' #to reply a new mail
-   match '/mails/:batch_id' => 'mails#view', :via => 'get' #to view a single batch mail  
-   match '/mailsent' => 'mails#create', :via => 'post' #mail sent
-   match '/mailreplied' => 'mails#reply', :via => 'post' #mai replied
+   match '/messages/inbox' => 'messages#inbox', :via => 'get' #inbox
+   match '/messages/reply/to/:id' => 'messages#renew', :via => 'get' #to reply a new mail
+   match '/messages/:batch_id' => 'messages#view', :via => 'get' #to view a single batch mail  
+   match '/messagesent' => 'messages#create', :via => 'post' #mail sent
+   match '/messagereplied' => 'messages#reply', :via => 'post' #mai replied
  
  
   resources :questions, :except => [:index, :new, :edit, :destroy] do

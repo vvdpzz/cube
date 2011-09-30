@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  receiver_id: 1
+  sender_id: 1
+  sender_name: MyString
+  description: MyString
+  subject_id: 1
+  subject_content: MyString
+  object_id: 1
+  object_content: MyString
+  read: false
+
+two:
+  receiver_id: 1
+  sender_id: 1
+  sender_name: MyString
+  description: MyString
+  subject_id: 1
+  subject_content: MyString
+  object_id: 1
+  object_content: MyString
+  read: false
