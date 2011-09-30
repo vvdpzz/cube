@@ -2,7 +2,7 @@ class CreateFollowQuestions < ActiveRecord::Migration
   def change
     create_table :follow_questions do |t|
       t.references :user
-      t.references :question
+      t.integer :question_id, :limit => 8, :null => false
 
       t.timestamps
     end

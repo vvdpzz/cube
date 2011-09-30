@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Answer < ActiveRecord::Base
   attr_accessible :id, :user_id, :question_id, :content, :is_correct, :votes_count, :comments, :created_at, :updated_at
   
