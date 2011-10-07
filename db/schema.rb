@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20110930034444) do
     t.integer  "user_id"
     t.integer  "batch_id"
     t.integer  "message_id"
+    t.string   "redis_mail"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -100,34 +101,29 @@ ActiveRecord::Schema.define(:version => 20110930034444) do
   add_index "money_transactions", ["winner_id"], :name => "index_money_transactions_on_winner_id"
 
   create_table "notifications", :force => true do |t|
-    t.integer  "receiver_id"
-    t.integer  "sender_id"
-    t.string   "sender_name"
+    t.integer  "user_id"
+    t.integer  "notif_type"
     t.string   "description"
-    t.integer  "subject_id"
-    t.string   "subject_content"
-    t.integer  "object_id"
-    t.string   "object_content"
-    t.boolean  "read"
+    t.boolean  "read",        :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
+
   create_table "questions", :id => false, :force => true do |t|
     t.integer  "id",                :limit => 8,                                                       :null => false
     t.integer  "user_id",                                                                              :null => false
-    t.string   "username",                                                                             :null => false
-    t.string   "about_me",                                                            :default => ""
     t.string   "title",                                                                                :null => false
     t.text     "content"
     t.integer  "credit",                                                              :default => 0
     t.decimal  "money",                                 :precision => 8, :scale => 2, :default => 0.0
     t.integer  "answers_count",                                                       :default => 0
     t.integer  "votes_count",                                                         :default => 0
-    t.integer  "correct_answer_id", :limit => 8,                                      :default => 0
-    t.binary   "comments",          :limit => 16777215
+    t.integer  "correct_answer_id",                                                   :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.binary   "comments",          :limit => 16777215
   end
 
   add_index "questions", ["user_id"], :name => "index_questions_on_user_id"
