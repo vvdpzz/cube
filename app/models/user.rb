@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   has_many :star_questions
   has_many :follow_questions
   
+  acts_as_voter
+  
   def self.basic_hash(user_id)
     {:user => User.select("id, username, realname").find_by_id(user_id).serializable_hash}
   end

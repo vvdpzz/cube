@@ -17,6 +17,8 @@ class Question < ActiveRecord::Base
   scope :free, lambda { where(["credit = 0 AND money = 0.00"]) }
   scope :paid, lambda { where(["credit <> 0 OR money <> 0.00"])}
   default_scope order("created_at DESC")
+  
+  acts_as_voteable
 
   attr_accessible :id, :user_id, :title, :content, :credit, :money, :answers_count, :votes_count, :correct_answer_id, :created_at, :updated_at
   
