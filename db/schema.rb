@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111008013931) do
+ActiveRecord::Schema.define(:version => 20111008015256) do
 
   create_table "answers", :id => false, :force => true do |t|
     t.integer  "id",          :limit => 8,                           :null => false
@@ -58,13 +58,25 @@ ActiveRecord::Schema.define(:version => 20111008013931) do
   add_index "follow_questions", ["question_id"], :name => "index_follow_questions_on_question_id"
   add_index "follow_questions", ["user_id"], :name => "index_follow_questions_on_user_id"
 
+  create_table "increment_configs", :force => true do |t|
+    t.string   "TABLE_NAME"
+    t.integer  "TABLE_TOTAL"
+    t.string   "COLUMN_NAME"
+    t.integer  "START_VALUE"
+    t.integer  "OFFSET_VALUE"
+    t.integer  "FLAG"
+    t.date     "GMT_MODIFIED"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "message_inboxes", :force => true do |t|
     t.integer  "user_id"
     t.integer  "batch_id"
     t.integer  "message_id"
-    t.string   "redis_mail"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "redis_mail", :limit => 30
   end
 
   create_table "messages", :force => true do |t|
@@ -101,29 +113,34 @@ ActiveRecord::Schema.define(:version => 20111008013931) do
   add_index "money_transactions", ["winner_id"], :name => "index_money_transactions_on_winner_id"
 
   create_table "notifications", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "notif_type"
+    t.integer  "receiver_id"
+    t.integer  "sender_id"
+    t.string   "sender_name"
     t.string   "description"
-    t.boolean  "read",        :default => false
+    t.integer  "subject_id"
+    t.string   "subject_content"
+    t.integer  "object_id"
+    t.string   "object_content"
+    t.boolean  "read"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
-
   create_table "questions", :id => false, :force => true do |t|
     t.integer  "id",                :limit => 8,                                                       :null => false
     t.integer  "user_id",                                                                              :null => false
+    t.string   "username",                                                                             :null => false
+    t.string   "about_me",                                                            :default => ""
     t.string   "title",                                                                                :null => false
     t.text     "content"
     t.integer  "credit",                                                              :default => 0
     t.decimal  "money",                                 :precision => 8, :scale => 2, :default => 0.0
     t.integer  "answers_count",                                                       :default => 0
     t.integer  "votes_count",                                                         :default => 0
-    t.integer  "correct_answer_id",                                                   :default => 0
+    t.integer  "correct_answer_id", :limit => 8,                                      :default => 0
+    t.binary   "comments",          :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.binary   "comments",          :limit => 16777215
   end
 
   add_index "questions", ["user_id"], :name => "index_questions_on_user_id"
