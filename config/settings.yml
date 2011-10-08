@@ -1,7 +1,7 @@
 defaults: &defaults
   answer_price: 5
-  vote_up_limit: 15
-  vote_down_limit: 125
+  vote_for_limit: 15
+  vote_against_limit: 125
   answer_vote_up: 10
   vote_down: 2
   answer_voter_down: 1

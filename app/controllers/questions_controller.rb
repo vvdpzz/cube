@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_filter :vote_init, :only => [:vote_for, :vote_against]
+  
   # GET /questions/paid
   def paid
     questions = Question.paid.select("id, title, credit, money, answers_count, votes_count, created_at")
@@ -161,8 +163,32 @@ class QuestionsController < ApplicationController
     end
   end
   
-  # PUT /questions/:id/vote_up
-  def vote_up
-    
+  # TODO vvdpzz will do vote day limit
+  # PUT /questions/:id/vote_for
+  def vote_for
+    if current_user.credit >= Settings.vote_for_limit and @voted != true
+      if @voted == nil
+        current_user.vote_for @question
+      else
+        current_user.vote_exclusively_against @question
+      end
+    end
   end
+  
+  # PUT /questions/:id/vote_against
+  def vote_against
+    if current_user.credit >= Settings.vote_against_limit and @voted != false
+      if @voted == nil
+        current_user.vote_against @question
+      else
+        current_user.vote_exclusively_for @question
+      end
+    end
+  end
+  
+  protected
+    def vote_init
+      @question = Question.select("id").find_by_id(params[:id])
+      @voted = @question.trivalent_voted_by? current_user
+    end
 end

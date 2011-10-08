@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110930034444) do
+ActiveRecord::Schema.define(:version => 20111008013931) do
 
   create_table "answers", :id => false, :force => true do |t|
     t.integer  "id",          :limit => 8,                           :null => false
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20110930034444) do
     t.integer  "user_id"
     t.integer  "batch_id"
     t.integer  "message_id"
+    t.string   "redis_mail"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -100,34 +101,29 @@ ActiveRecord::Schema.define(:version => 20110930034444) do
   add_index "money_transactions", ["winner_id"], :name => "index_money_transactions_on_winner_id"
 
   create_table "notifications", :force => true do |t|
-    t.integer  "receiver_id"
-    t.integer  "sender_id"
-    t.string   "sender_name"
+    t.integer  "user_id"
+    t.integer  "notif_type"
     t.string   "description"
-    t.integer  "subject_id"
-    t.string   "subject_content"
-    t.integer  "object_id"
-    t.string   "object_content"
-    t.boolean  "read"
+    t.boolean  "read",        :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
+
   create_table "questions", :id => false, :force => true do |t|
     t.integer  "id",                :limit => 8,                                                       :null => false
     t.integer  "user_id",                                                                              :null => false
-    t.string   "username",                                                                             :null => false
-    t.string   "about_me",                                                            :default => ""
     t.string   "title",                                                                                :null => false
     t.text     "content"
     t.integer  "credit",                                                              :default => 0
     t.decimal  "money",                                 :precision => 8, :scale => 2, :default => 0.0
     t.integer  "answers_count",                                                       :default => 0
     t.integer  "votes_count",                                                         :default => 0
-    t.integer  "correct_answer_id", :limit => 8,                                      :default => 0
-    t.binary   "comments",          :limit => 16777215
+    t.integer  "correct_answer_id",                                                   :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.binary   "comments",          :limit => 16777215
   end
 
   add_index "questions", ["user_id"], :name => "index_questions_on_user_id"
@@ -173,5 +169,19 @@ ActiveRecord::Schema.define(:version => 20110930034444) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
+
+  create_table "votes", :force => true do |t|
+    t.boolean  "vote",          :default => false
+    t.integer  "voteable_id",                      :null => false
+    t.string   "voteable_type",                    :null => false
+    t.integer  "voter_id"
+    t.string   "voter_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "votes", ["voteable_id", "voteable_type"], :name => "index_votes_on_voteable_id_and_voteable_type"
+  add_index "votes", ["voter_id", "voter_type", "voteable_id", "voteable_type"], :name => "fk_one_vote_per_user_per_entity", :unique => true
+  add_index "votes", ["voter_id", "voter_type"], :name => "index_votes_on_voter_id_and_voter_type"
 
 end

@@ -1,6 +1,10 @@
 class Question < ActiveRecord::Base
-  belongs_to :user, :counter_cache => true
-  has_many :answers, :dependent => :destroy
+  include Twitter::Extractor
+  
+  set_primary_key :id
+  
+  belongs_to :user, :counter_cache => true, :select => [:id, :username, :realname]
+  has_many :answers, :dependent => :destroy, :select => [:id, :question_id, :content, :is_correct, :votes_count]
   
   # validations
   validates_numericality_of :money, :message => "is not a number", :greater_than_or_equal_to => 0
@@ -13,8 +17,16 @@ class Question < ActiveRecord::Base
   scope :free, lambda { where(["credit = 0 AND money = 0.00"]) }
   scope :paid, lambda { where(["credit <> 0 OR money <> 0.00"])}
   default_scope order("created_at DESC")
+  
+  acts_as_voteable
 
   attr_accessible :id, :user_id, :title, :content, :credit, :money, :answers_count, :votes_count, :correct_answer_id, :created_at, :updated_at
+  
+  JSON_ATTRS = ['id', 'title', 'content', 'credit', 'money', 'answers_count', 'votes_count', 'created_at']
+  
+  def as_json_for_iOS
+    attributes.slice(*JSON_ATTRS).merge(:user => user, :answers => answers)
+  end
   
   def enough_credit
     errors.add(:credit, "credit_not_enough_warning") if self.user.credit < self.credit

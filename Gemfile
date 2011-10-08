@@ -17,6 +17,11 @@ gem 'enumerate_it'
 
 gem 'settingslogic'
 gem 'pusher'
+
+gem 'twitter-text'
+
+gem 'thumbs_up'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

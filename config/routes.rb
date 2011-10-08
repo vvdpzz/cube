@@ -24,6 +24,9 @@ Cube::Application.routes.draw do
       delete "follow" => "questions#unfollow"
       get "follow" => "questions#is_follow"
       
+      put "vote_for"
+      put "vote_against"
+      
       post "comments" => "questions#create_comment"
     end
     
