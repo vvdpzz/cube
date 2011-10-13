@@ -66,7 +66,7 @@ class QuestionsController < ApplicationController
       new_comments = old_comments + ',' + MultiJson.encode(hash)
     end
     
-    Notification.notif_new_q_comment (receiver_id,question_id)
+    Notification.notif_new_q_comment(receiver_id,question_id)
     respond_to do |format|
       Question.strong_update_comment(instance.id,new_comments)
       format.json { render :json => hash, :status => :created }

@@ -23,7 +23,7 @@ class UsersController < ApplicationController
         $redis.sadd("user:#{current_user.id}.follows", params[:id])
       end
       current_user.async_follow_user(user.id) if user.has_relationship_redis(current_user.id)
-      Notification.notif_new_follower (user.id,current_user.id,current_user.realname)
+      Notification.notif_new_follower(user.id,current_user.id,current_user.realname)
       render :json => {:followed => true}
     else
       render :json => {:error => true}, :status => :unprocessable_entity
