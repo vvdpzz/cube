@@ -37,7 +37,7 @@ class MessagesController < ApplicationController
         #$redis.zadd("z_mail:between.#{current_user.id}.#{params[:receiver_id]}.#{batch_id}", batch_id, MultiJson.encode(hash))
         $redis.lpush("l_inbox_#{current_user.id}",redis_mail)
         $redis.lpush("l_inbox_#{receiver_id.id}",redis_mail)
-        Notification.notif_new_message (receiver_id, sender_id, sender_name)
+        Notification.notif_new_message(receiver_id, sender_id, sender_name)
       end
       
 
@@ -82,7 +82,7 @@ class MessagesController < ApplicationController
     
     $redis.lpush(redis_mail, MultiJson.encode(hash))
     
-    Notification.notif_new_message (receiver_id, sender_id, sender_name)
+    Notification.notif_new_message(receiver_id, sender_id, sender_name)
     respond_to do |format|
       format.json { render :json => hash, :status => :created }
     end

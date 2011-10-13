@@ -1,7 +1,7 @@
 class Notification < ActiveRecord::Base
 
   # 1  问 题 有 了 新 答 案
-  def self.notif_new_answer (receiver_id,question_id,answer_id)
+  def self.notif_new_answer(receiver_id,question_id,answer_id)
     hash = {}
     hash[:question_id]   = question_id
     hash[:answer_id]   = answer_id
@@ -15,7 +15,7 @@ class Notification < ActiveRecord::Base
   end
   
   # 2  问 题 有 了 新 评 论
-  def self.notif_new_a_comment (receiver_id,answer_id)
+  def self.notif_new_a_comment(receiver_id,answer_id)
     hash = {}
     hash[:answer_id]   = answer_id
     hash[:message]     = 'You have a new comment'
@@ -27,7 +27,7 @@ class Notification < ActiveRecord::Base
   end
   
   # 3  答 案 有 了 新 评 论
-  def self.notif_new_q_comment (receiver_id,question_id)
+  def self.notif_new_q_comment(receiver_id,question_id)
     hash = {}
     hash[:question_id]   = question_id
     hash[:message]     = 'You have a new comment'
@@ -39,7 +39,7 @@ class Notification < ActiveRecord::Base
   end
   
   # 4  答 案 被 接 受
-  def self.notif_answer_accepted (receiver_id,question_id, answer_id)
+  def self.notif_answer_accepted(receiver_id,question_id, answer_id)
     hash = {}
     hash[:question_id]   = question_id
     hash[:answer_id]   = answer_id
@@ -52,7 +52,7 @@ class Notification < ActiveRecord::Base
   end
   
   # 5  用 户 被 关 注
-  def self.notif_new_follower (receiver_id,follower_id,follower_name)
+  def self.notif_new_follower(receiver_id,follower_id,follower_name)
     hash = {}
     hash[:follower_id]   = follower_id
     hash[:follower_name] = follower_name
@@ -65,7 +65,7 @@ class Notification < ActiveRecord::Base
   end
   
   # 6 new message
-  def self.notif_new_message (receiver_id, sender_id, sender_name)
+  def self.notif_new_message(receiver_id, sender_id, sender_name)
     hash = {}
     hash[:sender_id]   = sender_id
     hash[:sender_name] = sender_name
