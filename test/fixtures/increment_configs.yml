@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ID: 1
+  TABLE_NAME: MyString
+  TABLE_TOTAL: 1
+  COLUMN_NAME: MyString
+  START_VALUE: 1
+  OFFSET_VALUE: 1
+  FLAG: 1
+  GMT_MODIFIED: 2011-10-08
+
+two:
+  ID: 1
+  TABLE_NAME: MyString
+  TABLE_TOTAL: 1
+  COLUMN_NAME: MyString
+  START_VALUE: 1
+  OFFSET_VALUE: 1
+  FLAG: 1
+  GMT_MODIFIED: 2011-10-08
