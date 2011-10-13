@@ -88,9 +88,8 @@ class MessagesController < ApplicationController
     end
   end
 
-  # GET /mails/:batch_id
+  # GET /mmessages/:batch_id
   def view
-    
     batch_id = params[:batch_id]
     mails = $redis.KEYS("l_mail:*.#{batch_id}").first
     #hash = mails.collect{|mail| $redis.ZRANGE("#{mail}",0,-1)} 
@@ -105,7 +104,7 @@ class MessagesController < ApplicationController
     end
   end
   
-  # GET /mails/inbox
+  # GET /mmessages/inbox
   def inbox
     mails = $redis.LRANGE("l_inbox_#{current_user.id}",0,-1)
     #mails = MultiJson.encode(mails)
