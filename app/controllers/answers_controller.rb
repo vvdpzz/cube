@@ -6,10 +6,9 @@ class AnswersController < ApplicationController
       id, user_id, question_id, content = UUIDList.pop, current_user.id, params[:question_id], params[:content]
       answer = Answer.new :id => id, :user_id => user_id, :question_id => question_id, :content => content
       answer_price = Settings.answer_price
-      question_info = Question.select('user_id,credit,money').where(:id => params[:question_id])
       respond_to do |format|
         if answer.valid?
-          if question_info.credit > 0 or question_info.money > 0
+          if question.credit > 0 or question.money > 0
             Answer.strong_create_pay_answer(id, user_id, question_id, content, answer_price)
           else
             Answer.strong_create_free_answer(id, user_id, question_id, content)
