@@ -17,7 +17,7 @@ class AnswersController < ApplicationController
           answer = Answer.find_by_id id
           data = answer.serializable_hash
           data.merge! User.basic_hash current_user.id
-          Notification.notif_new_answer (question_info.user_id,question_id,id)
+          # Notification.notif_new_answer (question_info.user_id,question_id,id)
           format.json { render :json => data, :status => :created, :location => answer }
         else
           format.json { render :json => answer.errors, :status => :unprocessable_entity }
